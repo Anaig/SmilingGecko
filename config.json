@@ -61,6 +61,22 @@
             "Type": {
               "Name": "time"
             }
+          },
+          {
+            "Name": "farmer",
+            "Description": "...",
+            "DisplayName": "Farmer",
+            "Type": {
+              "Name": "Farmer"
+            }
+          },
+          {
+            "Name": "distributor",
+            "Description": "...",
+            "DisplayName": "Distributor",
+            "Type": {
+              "Name": "Distributor"
+            }
           }
         ]
       },
@@ -132,6 +148,14 @@
             "DisplayName": "Confirm shipment",
             "Description": "Confirm that you have shipped the good to the collecting center",
             "Parameters": [
+                {
+                    "Name": "distributor",
+                    "Description": "...",
+                    "DisplayName": "Distributor",
+                    "Type": {
+                      "Name": "Distributor"
+                    }
+                  }
             ]
           },
           {
