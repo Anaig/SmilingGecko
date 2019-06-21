@@ -1,0 +1,440 @@
+{
+  "ApplicationName": "FoodTransparency",
+  "DisplayName": "Food Transparency",
+  "Description": "Smiling Gecko food transparency application for SBHack19.",
+  "ApplicationRoles": [
+    {
+      "Name": "Investor",
+      "Description": "First party who invests and orders goods."
+    },
+    {
+      "Name": "Farmer",
+      "Description": "A party who produces and ships goods."
+    },
+    {
+      "Name": "Device",
+      "Description": "A device to track farming, transportation and factory telemetry."
+    },
+    {
+      "Name": "Collector",
+      "Description": "The party who washes, sorts and packages goods."
+    },
+    {
+      "Name": "Auditor",
+      "Description": "An observer who has oversight on the end-to-end shipment."
+    },
+    {
+      "Name": "PesticideSupplier",
+      "Description": "A party who sells pesticides to farmers."
+    }
+  ],
+  "Workflows": [
+    {
+      "Name": "FoodTransparency",
+      "DisplayName": "Food Transparency",
+      "Description": "Main workflow to track end-to-end transportation of perishable goods.",
+      "Initiators": [ "Investor" ],
+      "StartState": "OrderCreated",
+      "Properties": [],
+      "Constructor": {
+        "Parameters": [
+          {
+            "Name": "price",
+            "Description": "...",
+            "DisplayName": "Price",
+            "Type": {
+              "Name": "int"
+            }
+          },
+          {
+            "Name": "quantity",
+            "Description": "...",
+            "DisplayName": "Quantity",
+            "Type": {
+              "Name": "int"
+            }
+          },
+          {
+            "Name": "deliverydate",
+            "Description": "...",
+            "DisplayName": "Delivery date",
+            "Type": {
+              "Name": "time"
+            }
+          }
+        ]
+      },
+      "Functions": [
+        {
+          "Name": "IngestTelemetry",
+          "DisplayName": "Ingest Telemetry",
+          "Description": "...",
+          "Parameters": [
+            {
+              "Name": "humidity",
+              "Description": "...",
+              "DisplayName": "Humidity",
+              "Type": {
+                "Name": "int"
+              }
+            },
+            {
+              "Name": "temperature",
+              "Description": "...",
+              "DisplayName": "Temperature",
+              "Type": {
+                "Name": "int"
+              }
+            },
+            {
+                "Name": "gyroscope",
+                "Description": "...",
+                "DisplayName": "Gyroscope",
+                "Type": {
+                  "Name": "int"
+                }
+              },
+            {
+                "Name": "accelerometer",
+                "Description": "...",
+                "DisplayName": "Accelerometer",
+                "Type": {
+                  "Name": "int"
+                }
+              },
+            {
+              "Name": "timestamp",
+              "Description": "...",
+              "DisplayName": "Timestamp",
+              "Type": {
+                "Name": "int"
+              }
+            }
+          ]
+        },
+        {
+          "Name": "Confirm",
+          "DisplayName": "Confirm order",
+          "Description": "...",
+          "Parameters": [
+            {
+              "Name": "answer",
+              "Description": "...",
+              "DisplayName": "Do you confirm the order?",
+              "Type": {
+                "Name": "bool"
+              }
+            }
+          ]
+        },
+        {
+            "Name": "StartDelivery",
+            "DisplayName": "Confirm shipment",
+            "Description": "Confirm that you have shipped the good to the collecting center",
+            "Parameters": [
+            ]
+          },
+          {
+            "Name": "ReportActivity",
+            "DisplayName": "Report an activity",
+            "Description": "...",
+            "Parameters": [
+              {
+                "Name": "activity",
+                "Description": "...",
+                "DisplayName": "Describe the activity",
+                "Type": {
+                  "Name": "string"
+                }
+              }
+            ]
+          },
+          {
+            "Name": "ReportID",
+            "DisplayName": "Report a pesticide buyer ID",
+            "Description": "...",
+            "Parameters": [
+              {
+                "Name": "identity",
+                "Description": "...",
+                "DisplayName": "identity of the farmer",
+                "Type": {
+                  "Name": "Farmer"
+                }
+              }
+            ]
+          },
+          {
+            "Name": "Validate",
+            "DisplayName": "Validate reception",
+            "Description": "Reception by the collection center",
+            "Parameters": [
+            ]
+          },
+          {
+            "Name": "CheckQuality",
+            "DisplayName": "Check quality",
+            "Description": "...",
+            "Parameters": [
+              {
+                "Name": "quality",
+                "Description": "...",
+                "DisplayName": "Quality check passed?",
+                "Type": {
+                  "Name": "bool"
+                }
+              }
+            ]
+          },
+          {
+            "Name": "CompleteProcessing",
+            "DisplayName": "Complete processing",
+            "Description": "...",
+            "Parameters": [
+            ]
+          },
+          {
+            "Name": "ConfirmPickUp",
+            "DisplayName": "Confirm pick-up",
+            "Description": "...",
+            "Parameters": [
+            ]
+        },
+        {
+            "Name": "StartDelivery",
+            "DisplayName": "Delivery started",
+            "Description": "...",
+            "Parameters": [
+            ]
+        },
+        {
+            "Name": "ConfirmDelivery",
+            "DisplayName": "Good received",
+            "Description": "...",
+            "Parameters": [
+                {
+                    "Name": "goodQuality",
+                    "Description": "...",
+                    "DisplayName": "Quality check passed?",
+                    "Type": {
+                        "Name": "bool"
+                    }
+                }
+            ]
+        }
+      ],
+      "States": [
+        {
+          "Name": "OrderCreated",
+          "DisplayName": "Order created",
+          "Description": "...",
+          "PercentComplete": 5,
+          "Value": 5,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": ["Farmer"],
+              "AllowedInstanceRoles": [],
+              "Description": "...",
+              "Function": "Confirm",
+              "NextStates": [ "OrderConfirmed",  "ClosedTransaction" ],
+              "DisplayName": "Order confirmed by the farmer"
+            }
+          ]
+        },
+        {
+          "Name": "OrderConfirmed",
+          "DisplayName": "Order confirmed",
+          "Description": "...",
+          "PercentComplete": 10,
+          "Value": 10,
+          "Style": "Success",
+          "Transitions": [
+            {
+              "AllowedRoles": ["Farmer"],
+              "AllowedInstanceRoles": [],
+              "Description": "...",
+              "Function": "StartDelivery",
+              "NextStates": [ "InTransit" ],
+              "DisplayName": "Good in transit to the collecting center"
+            },
+            {
+              "AllowedRoles": ["Farmer"],
+              "AllowedInstanceRoles": [],
+              "Description": "...",
+              "Function": "ReportActivity",
+              "NextStates": [ "OrderConfirmed"],
+              "DisplayName": "Activity reported"
+            },
+            {
+                "AllowedRoles": ["Device"],
+                "AllowedInstanceRoles": [],
+                "Description": "...",
+                "Function": "IngestTelemetry",
+                "NextStates": [ "OrderConfirmed"],
+                "DisplayName": "Telemetry reported"
+              },
+            {
+                "AllowedRoles": ["PesticideSupplier"],
+                "AllowedInstanceRoles": [],
+                "Description": "...",
+                "Function": "ReportID",
+                "NextStates": [ "OrderConfirmed"],
+                "DisplayName": "Pesticide bought"
+              }
+          ]
+        },
+        {
+          "Name": "InTransit",
+          "DisplayName": "In transit",
+          "Description": "...",
+          "PercentComplete": 25,
+          "Value": 25,
+          "Style": "Success",
+          "Transitions": [
+            {
+                "AllowedRoles": ["Collector"],
+                "AllowedInstanceRoles": [],
+                "Description": "...",
+                "Function": "Validate",
+                "NextStates": [ "GoodReceived" ],
+                "DisplayName": "Good has been received in the collecting center"
+              },
+              {
+                "AllowedRoles": ["Device"],
+                "AllowedInstanceRoles": [],
+                "Description": "...",
+                "Function": "IngestTelemetry",
+                "NextStates": [ "InTransit"],
+                "DisplayName": "Telemetry reported"
+              }
+          ]
+        },
+        {
+          "Name": "GoodReceived",
+          "DisplayName": "Good received for collection",
+          "Description": "...",
+          "PercentComplete": 30,
+          "Value": 30,
+          "Style": "Success",
+          "Transitions": [
+            {
+                "AllowedRoles": ["Collector"],
+                "AllowedInstanceRoles": [],
+                "Description": "...",
+                "Function": "CheckQuality",
+                "NextStates": [ "OutOfCompliance", "GoodValidated"],
+                "DisplayName": "Quality checked"
+              }
+          ]
+        },
+        {
+            "Name": "OutOfCompliance",
+            "DisplayName": "Good is out of compliance",
+            "Description": "...",
+            "PercentComplete": 100,
+            "Value": 100,
+            "Style": "Failure",
+            "Transitions": []
+          },
+          {
+            "Name": "GoodValidated",
+            "DisplayName": "Good validated",
+            "Description": "...",
+            "PercentComplete": 35,
+            "Value": 35,
+            "Style": "Success",
+            "Transitions": [
+              {
+                  "AllowedRoles": ["Device"],
+                  "AllowedInstanceRoles": [],
+                  "Description": "...",
+                  "Function": "IngestTelemetry",
+                  "NextStates": [ "GoodValidated"],
+                  "DisplayName": "telemetry sent"
+                },
+                {
+                    "AllowedRoles": ["Collector"],
+                    "AllowedInstanceRoles": [],
+                    "Description": "...",
+                    "Function": "CompleteProcessing",
+                    "NextStates": [ "DeliveryReady"],
+                    "DisplayName": "The good is ready to be picked-up by the distributor"
+                  }
+            ]
+          },
+          {
+            "Name": "DeliveryReady",
+            "DisplayName": "Delivery ready to be picked-up",
+            "Description": "...",
+            "PercentComplete": 80,
+            "Value": 80,
+            "Style": "Success",
+            "Transitions": [
+              {
+                  "AllowedRoles": ["Distributor"],
+                  "AllowedInstanceRoles": [],
+                  "Description": "...",
+                  "Function": "ConfirmPickUp",
+                  "NextStates": [ "DeliveryPickedUp"],
+                  "DisplayName": "Good is being delivered to the distributor"
+                }
+            ]
+          },
+          {
+            "Name": "DeliveryPickedUp",
+            "DisplayName": "Delivery has been picked-up by the distributor",
+            "Description": "...",
+            "PercentComplete": 90,
+            "Value": 90,
+            "Style": "Success",
+            "Transitions": [
+              {
+                  "AllowedRoles": ["Distributor"],
+                  "AllowedInstanceRoles": [],
+                  "Description": "...",
+                  "Function": "StartDelivery",
+                  "NextStates": [ "DeliveryInTransit"],
+                  "DisplayName": "Good is being delivered to the investor"
+                }
+            ]
+          },
+          {
+            "Name": "DeliveryInTransit",
+            "DisplayName": "Delivery is being sent to the investor",
+            "Description": "...",
+            "PercentComplete": 95,
+            "Value": 95,
+            "Style": "Success",
+            "Transitions": [
+              {
+                  "AllowedRoles": ["Device"],
+                  "AllowedInstanceRoles": [],
+                  "Description": "...",
+                  "Function": "IngestTelemetry",
+                  "NextStates": [ "DeliveryInTransit"],
+                  "DisplayName": "Telemetry received"
+                },
+                {
+                    "AllowedRoles": ["Investor"],
+                    "AllowedInstanceRoles": [],
+                    "Description": "...",
+                    "Function": "ConfirmDelivery",
+                    "NextStates": [ "ClosedTransaction", "OutOfCompliance"],
+                    "DisplayName": "Delivery received by the investor"
+                  }
+            ]
+          },
+          {
+            "Name": "ClosedTransaction",
+            "DisplayName": "Transaction over, good received",
+            "Description": "...",
+            "PercentComplete": 100,
+            "Value": 100,
+            "Style": "Success",
+            "Transitions": []
+          }
+      ]
+    }
+  ]
+}
