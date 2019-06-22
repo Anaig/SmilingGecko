@@ -2,7 +2,7 @@
 - The URL to your working application
   - URL: https://smilinggecko-ajq7it.azurewebsites.net/
  - The URL toyour public github repository
-   - URL: https://github.com/tedescomicchidev/smilinggecko
+   - URL: https://github.com/anaig/smilinggecko
  - Short description about your applicationand:
    - Browse: https://smilinggecko-ajq7it.azurewebsites.net/
 ![Screen 1](/readmeMedia/screen1.png)
