@@ -1,6 +1,6 @@
 pragma solidity >=0.4.25 <0.6.0;
 
-contract FoodTransparency
+contract SmilingGecko
 {
     //Set of States
     enum StateType {OrderCreated, OrderConfirmed, InTransit, GoodReceived, OutOfCompliance, GoodValidated, DeliveryReady, DeliveryPickedUp, DeliveryInTransit, ClosedTransaction}
@@ -19,8 +19,6 @@ contract FoodTransparency
     int public DeliveryDate;
     int public Humidity;
     int public Temperature;
-    int public Accelerometer;
-    int public Gyroscope;
     int public DeviceTimestamp;
     SensorType public Sensor;
     string public Activity;
@@ -39,13 +37,11 @@ contract FoodTransparency
         DeliveryDate = deliveryDate;
         Humidity = 0;
         Temperature = 0;
-        Accelerometer = 0;
-        Gyroscope = 0;
         PesticideCounter = 0;
         DeviceTimestamp = 0;
     }
 
-    function IngestTelemetry(int humidity, int temperature, int gyroscope, int accelerometer, int timestamp) public
+    function IngestTelemetry(int humidity, int temperature, int timestamp) public
     {
         // Separately check for states and sender 
         // to avoid not checking for state when the sender is the device
@@ -65,24 +61,9 @@ contract FoodTransparency
             revert();
         }
 
-        if (State == StateType.OrderConfirmed){
-            Sensor = SensorType.Farming;
-            Humidity = humidity;
-            Temperature = temperature;
-        }
-
-        if (State == StateType.InTransit || State == StateType.DeliveryInTransit){
-            Sensor = SensorType.Transportation;
-            Accelerometer = accelerometer;
-            Gyroscope = gyroscope;
-        }
-
-        if(State == StateType.GoodValidated){
-            Sensor = SensorType.Factory;
-            Humidity = humidity;
-            Temperature = temperature;
-        }
-
+        Sensor = SensorType.Farming;
+        Humidity = humidity;
+        Temperature = temperature;
         DeviceTimestamp = timestamp;
     }
 

@@ -1,6 +1,6 @@
 {
-  "ApplicationName": "FoodTransparency",
-  "DisplayName": "Food Transparency",
+  "ApplicationName": "SmilingGecko",
+  "DisplayName": "Smiling Gecko",
   "Description": "Smiling Gecko food transparency application for SBHack19.",
   "ApplicationRoles": [
     {
@@ -30,8 +30,8 @@
   ],
   "Workflows": [
     {
-      "Name": "FoodTransparency",
-      "DisplayName": "Food Transparency",
+      "Name": "SmilingGecko",
+      "DisplayName": "Smiling Gecko",
       "Description": "Main workflow to track end-to-end transportation of perishable goods.",
       "Initiators": [ "Investor" ],
       "StartState": "OrderCreated",
@@ -127,22 +127,6 @@
                 "Name": "int"
               }
             },
-            {
-                "Name": "gyroscope",
-                "Description": "...",
-                "DisplayName": "Gyroscope",
-                "Type": {
-                  "Name": "int"
-                }
-              },
-            {
-                "Name": "accelerometer",
-                "Description": "...",
-                "DisplayName": "Accelerometer",
-                "Type": {
-                  "Name": "int"
-                }
-              },
             {
               "Name": "timestamp",
               "Description": "...",
