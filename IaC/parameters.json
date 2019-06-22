@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "pocName": {
+            "value": "smilinggecko"
+        },
+        "authType": {
+            "value": "sshPublicKey"
+        },
+        "username": {
+            "value": "mitedesc"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "sshPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCi158mHpzOLEr2yoh9S0Tb24uECOvS/C3AZloou8fZUKPPfHo4hEQPc1zbwvyFZBJyBm6cO7wG1oVEWKd8G5fHHZ+MhJho5xte158n8ovLgDH/LidpHK+b8qAOjsGX/6P3aQhxnNW7+0s4FstcUCMyB9Q6edjz1XyPhStQQAEedc1o1UT1pb29F8KghP30oACsxEhTByE3QbyH9oRzDdn6eXH5sUVBHIuHeTaIGnpHMWvE7xg15X1r4nz58BQ94YD3YqIWo44BbHiJYgcS6NhfsxkoVh47rgX/vaTfH7UmpLk96D8zsPgreSEmq6v5OljxICmkLBWXULV+Hauf7qWZ"
+        },
+        "aadBlockchainClientAppRegistrationApplicationId": {
+            "value": "1dc5b930-26ec-4c1a-ae7a-fff2474f47c4"
+        },
+        "aadTenantDomainName": {
+            "value": "smilinggeckohackers.onmicrosoft.com"
+        },
+        "workerTag": {
+            "value": ""
+        },
+        "sendToServiceOwners": {
+            "value": false
+        },
+        "customEmails": {
+            "value": []
+        },
+        "password": {
+            "value": null
+        },
+        "deploymentGeolocation": {
+            "value": "westeurope"
+        },
+        "websiteOverride": {
+            "value": ""
+        },
+        "blockchainProtocol": {
+            "value": "Quorum"
+        },
+        "blockchainSku": {
+            "value": "B0"
+        },
+        "vmSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "blockchainRPC": {
+            "value": null
+        },
+        "baseUrl": {
+            "value": "https://catalogartifact.azureedge.net/publicartifacts/microsoft-azure-blockchain.azure-blockchain-workbench-c635569f-6278-46aa-bf98-f978026b1103-azure-blockchain-workbench/Artifacts"
+        }
+    }
+}
