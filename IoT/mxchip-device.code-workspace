@@ -1,0 +1,15 @@
+{
+    "folders": [
+        {
+            "path": "Device"
+        }
+    ],
+    "settings": {
+        "IoTWorkbench.BoardId": "devkit",
+        "IoTWorkbench.DevicePath": "Device",
+        "IoTWorkbench.iothubConnectionString": "HostName=SmilingGeckoHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=26eBC1fAvrTLkWSk8zH0DI4gREiGR/S30jJm42Q7QhE=",
+        "IoTWorkbench.eventHubConnectionString": "Endpoint=sb://ihsuprodamres064dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=26eBC1fAvrTLkWSk8zH0DI4gREiGR/S30jJm42Q7QhE=",
+        "IoTWorkbench.eventHubConnectionPath": "iothub-ehub-smilinggec-1802691-0a3b573395",
+        "IoTWorkbench.iothubDeviceConnectionString": "HostName=SmilingGeckoHub.azure-devices.net;DeviceId=FarmingDevice;SharedAccessKey=Yw0ONDwvu1S3MQ1cSoRCH3UlbtoamvdJyA9qwIoPQPM="
+    }
+}

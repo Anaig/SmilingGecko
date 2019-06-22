@@ -1,0 +1,18 @@
+{
+    "componentConfigs": [
+        {
+            "id": "f244aad2-c85a-2de5-2684-873270c8fd29",
+            "folder": "",
+            "name": "",
+            "dependencies": [],
+            "type": "IoTHub",
+            "componentInfo": {
+                "values": {
+                    "iotHubConnectionString": "HostName=SmilingGeckoHub.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=26eBC1fAvrTLkWSk8zH0DI4gREiGR/S30jJm42Q7QhE=",
+                    "eventHubConnectionString": "Endpoint=sb://ihsuprodamres064dednamespace.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=26eBC1fAvrTLkWSk8zH0DI4gREiGR/S30jJm42Q7QhE=",
+                    "eventHubConnectionPath": "iothub-ehub-smilinggec-1802691-0a3b573395"
+                }
+            }
+        }
+    ]
+}
