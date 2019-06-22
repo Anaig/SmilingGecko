@@ -174,11 +174,11 @@
             "Description": "Confirm that you have shipped the good to the collecting center",
             "Parameters": [
                 {
-                    "Name": "distributor",
+                    "Name": "collector",
                     "Description": "...",
-                    "DisplayName": "Distributor",
+                    "DisplayName": "Collector",
                     "Type": {
-                      "Name": "Distributor"
+                      "Name": "Collector"
                     }
                   }
             ]

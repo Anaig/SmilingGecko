@@ -114,7 +114,7 @@ contract FoodTransparency
         }
     }
 
-    function StartGoodDelivery(address distributor) public
+    function StartGoodDelivery(address collector) public
     {
         if ( State == StateType.ClosedTransaction )
         {
@@ -131,7 +131,7 @@ contract FoodTransparency
             revert();
         }
 
-        Distributor = distributor;
+        Collector = collector;
         State = StateType.InTransit;
     }
 
