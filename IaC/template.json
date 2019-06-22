@@ -1,0 +1,292 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "defaultValue": "[resourceGroup().location]",
+            "type": "String",
+            "metadata": {
+                "description": "Resource group location for current deployment"
+            }
+        },
+        "pocName": {
+            "maxLength": 16,
+            "type": "String",
+            "metadata": {
+                "description": "A short identifier to distinguish machines in this membership"
+            }
+        },
+        "authType": {
+            "defaultValue": "password",
+            "allowedValues": [
+                "password",
+                "sshPublicKey"
+            ],
+            "type": "String",
+            "metadata": {
+                "description": "Authorization type for SSH access to VMs"
+            }
+        },
+        "username": {
+            "type": "String",
+            "metadata": {
+                "description": "Admin username on all VMs."
+            }
+        },
+        "adminPassword": {
+            "defaultValue": "",
+            "type": "SecureString",
+            "metadata": {
+                "description": "Administrator password for each deployed VM"
+            }
+        },
+        "sshPublicKey": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "ssh public key for connecting to VMs."
+            }
+        },
+        "AADBlockchainClientAppRegistrationApplicationId": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "AAD ID of service principal."
+            }
+        },
+        "AADTenantDomainName": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "Name of AAD tenant containing the service principal."
+            }
+        },
+        "workerTag": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "sendToServiceOwners": {
+            "defaultValue": false,
+            "type": "Bool",
+            "metadata": {
+                "description": "Send alert email to all the service owners"
+            }
+        },
+        "customEmails": {
+            "defaultValue": [],
+            "type": "Array",
+            "metadata": {
+                "description": "Custom emails to send alerts to"
+            }
+        },
+        "password": {
+            "type": "SecureString",
+            "metadata": {
+                "description": ""
+            }
+        },
+        "deploymentGeolocation": {
+            "defaultValue": "eastus",
+            "allowedValues": [
+                "eastus",
+                "southeastasia",
+                "westeurope"
+            ],
+            "type": "String",
+            "metadata": {
+                "description": "Geolocation for Workbench resources"
+            }
+        },
+        "websiteOverride": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": ""
+            }
+        },
+        "blockchainProtocol": {
+            "defaultValue": "Quorum",
+            "allowedValues": [
+                "Quorum"
+            ],
+            "type": "String",
+            "metadata": {
+                "description": "The Protocol for Azure Blockhain Service"
+            }
+        },
+        "blockchainSku": {
+            "defaultValue": "B0",
+            "allowedValues": [
+                "B0",
+                "S0"
+            ],
+            "type": "String",
+            "metadata": {
+                "description": "The Sku for Azure Blockhain Service"
+            }
+        },
+        "vmSize": {
+            "defaultValue": "",
+            "type": "String",
+            "metadata": {
+                "description": "Size of the virtual machine for transaction nodes"
+            }
+        },
+        "blockchainRPC": {
+            "defaultValue": "",
+            "type": "SecureString"
+        },
+        "baseUrl": {
+            "defaultValue": "https://catalogartifact.azureedge.net/publicartifacts/microsoft-azure-blockchain.azure-blockchain-workbench-c635569f-6278-46aa-bf98-f978026b1103-azure-blockchain-workbench/Artifacts",
+            "type": "String",
+            "metadata": {
+                "description": "The base URL for dependent assets",
+                "artifactsBaseUrl": ""
+            }
+        }
+    },
+    "variables": {
+        "deploymentRegion": "[parameters('deploymentGeolocation')]",
+        "deploymentId": "[toLower(take(uniqueString(concat(resourceGroup().Id, variables('deploymentRegion'), parameters('pocName'))), 6))]",
+        "workbenchWithABS": "pid-5cfbf805-3e47-48c2-9444-c78e0de8aea7",
+        "workbenchBYOEGuid": "pid-ac8867a2-949c-41c4-8494-4306b8d99e26",
+        "deploymentGuid": "[if(empty(parameters('blockchainRPC')), variables('workbenchWithABS'), variables('workbenchBYOEGuid'))]",
+        "blockchainName": "[take(replace(toLower(concat(parameters('pocName'), variables('deploymentId'), 'blockchain')), '-', ''), 20)]",
+        "consortiumName": "[take(replace(toLower(concat(parameters('pocName'), variables('deploymentId'), 'consortium')), '-', ''), 20)]",
+        "blockchainPort": "3200",
+        "appBuilderTemplate": "[concat(parameters('pocName'), '-M1', '-appBuilder')]",
+        "dockerRepository": "blockchainworkbenchprod.azurecr.io",
+        "dockerLogin": "298cb6f5-f73a-45dc-83a7-16cfd5fe7461",
+        "dockerPasswd": "IrMOjS00aLqRCvvk/kc1WURAMX44ALvCvn+duLyog2A=",
+        "dockerImageTag": "1.7.0"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-08-01",
+            "name": "[variables('deploymentGuid')]",
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": []
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Blockchain/blockchainMembers",
+            "apiVersion": "2018-06-01-preview",
+            "name": "[variables('blockchainName')]",
+            "location": "[variables('deploymentRegion')]",
+            "sku": {
+                "name": "[parameters('blockchainSku')]"
+            },
+            "properties": {
+                "protocol": "[parameters('blockchainProtocol')]",
+                "consensus": "Default",
+                "password": "[parameters('password')]",
+                "consortium": "[variables('consortiumName')]",
+                "consortiumManagementAccountPassword": "[parameters('password')]",
+                "firewallRules": [
+                    {
+                        "ruleName": "OpenAll",
+                        "startIpAddress": "0.0.0.0",
+                        "endIpAddress": "255.255.255.255"
+                    }
+                ]
+            },
+            "condition": "[empty(parameters('blockchainRPC'))]"
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-08-01",
+            "name": "[variables('appBuilderTemplate')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Blockchain/blockchainMembers', variables('blockchainName'))]"
+            ],
+            "properties": {
+                "templateLink": {
+                    "contentVersion": "1.0.0.0",
+                    "uri": "[concat(parameters('baseUrl'), '/deployAppBuilder.json')]"
+                },
+                "mode": "Incremental",
+                "parameters": {
+                    "location": {
+                        "value": "[variables('deploymentRegion')]"
+                    },
+                    "pocName": {
+                        "value": "[parameters('pocName')]"
+                    },
+                    "username": {
+                        "value": "[parameters('username')]"
+                    },
+                    "authType": {
+                        "value": "[parameters('authType')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "sshPublicKey": {
+                        "value": "[parameters('sshPublicKey')]"
+                    },
+                    "AADBlockchainClientAppRegistrationApplicationId": {
+                        "value": "[parameters('AADBlockchainClientAppRegistrationApplicationId')]"
+                    },
+                    "AADTenantDomainName": {
+                        "value": "[parameters('AADTenantDomainName')]"
+                    },
+                    "workerVMSku": {
+                        "value": "[parameters('vmSize')]"
+                    },
+                    "workerTag": {
+                        "value": "[parameters('workerTag')]"
+                    },
+                    "dockerImageTag": {
+                        "value": "[variables('dockerImageTag')]"
+                    },
+                    "sendToServiceOwners": {
+                        "value": "[parameters('sendToServiceOwners')]"
+                    },
+                    "customEmails": {
+                        "value": "[parameters('customEmails')]"
+                    },
+                    "databasePassword": {
+                        "value": "[parameters('password')]"
+                    },
+                    "blockchainRPC": {
+                        "value": "[if(empty(parameters('blockchainRPC')), concat('https://', reference(resourceId('Microsoft.Blockchain/blockchainMembers', variables('blockchainName'))).dns, ':', variables('blockchainPort'), '/', listApiKeys(resourceId('Microsoft.Blockchain/blockchainMembers', variables('blockchainName')), '2018-06-01-preview').keys[0].value), parameters('blockchainRPC'))]"
+                    },
+                    "blockchainVnetName": {
+                        "value": ""
+                    },
+                    "dockerRepository": {
+                        "value": "[variables('dockerRepository')]"
+                    },
+                    "dockerLogin": {
+                        "value": "[variables('dockerLogin')]"
+                    },
+                    "dockerPasswd": {
+                        "value": "[variables('dockerPasswd')]"
+                    },
+                    "websiteOverride": {
+                        "value": "[parameters('websiteOverride')]"
+                    },
+                    "baseUrl": {
+                        "value": "[parameters('baseUrl')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "apiURL": {
+            "type": "String",
+            "value": "[reference(variables('appBuilderTemplate')).outputs.gatewayApiUrl.value]"
+        },
+        "websiteURL": {
+            "type": "String",
+            "value": "[reference(variables('appBuilderTemplate')).outputs.websiteUiUrl.value]"
+        }
+    }
+}

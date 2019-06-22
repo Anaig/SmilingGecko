@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "pocName": {
+            "value": ""
+        },
+        "authType": {
+            "value": "sshPublicKey"
+        },
+        "username": {
+            "value": ""
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "sshPublicKey": {
+            "value": ""
+        },
+        "aadBlockchainClientAppRegistrationApplicationId": {
+            "value": ""
+        },
+        "aadTenantDomainName": {
+            "value": ""
+        },
+        "workerTag": {
+            "value": ""
+        },
+        "sendToServiceOwners": {
+            "value": false
+        },
+        "customEmails": {
+            "value": []
+        },
+        "password": {
+            "value": null
+        },
+        "deploymentGeolocation": {
+            "value": "westeurope"
+        },
+        "websiteOverride": {
+            "value": ""
+        },
+        "blockchainProtocol": {
+            "value": "Quorum"
+        },
+        "blockchainSku": {
+            "value": "B0"
+        },
+        "vmSize": {
+            "value": "Standard_DS1_v2"
+        },
+        "blockchainRPC": {
+            "value": null
+        },
+        "baseUrl": {
+            "value": "https://catalogartifact.azureedge.net/publicartifacts/microsoft-azure-blockchain.azure-blockchain-workbench-c635569f-6278-46aa-bf98-f978026b1103-azure-blockchain-workbench/Artifacts"
+        }
+    }
+}
