@@ -1,0 +1,232 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_LogicAppV1_name": {
+            "defaultValue": "LogicAppV1",
+            "type": "String"
+        },
+        "connections_servicebus_externalid": {
+            "defaultValue": "/subscriptions/e294471f-f59f-42c9-842a-fad9e379127a/resourceGroups/smilinggecko/providers/Microsoft.Web/connections/servicebus",
+            "type": "String"
+        },
+        "connections_servicebus_2_externalid": {
+            "defaultValue": "/subscriptions/e294471f-f59f-42c9-842a-fad9e379127a/resourceGroups/smilinggecko/providers/Microsoft.Web/connections/servicebus-2",
+            "type": "String"
+        },
+        "connections_sql_1_externalid": {
+            "defaultValue": "/subscriptions/e294471f-f59f-42c9-842a-fad9e379127a/resourceGroups/smilinggecko/providers/Microsoft.Web/connections/sql-1",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_LogicAppV1_name')]",
+            "location": "westeurope",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "When_a_message_is_received_in_a_queue_(auto-complete)": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 1
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['servicebus']['connectionId']"
+                                    }
+                                },
+                                "method": "get",
+                                "path": "/@{encodeURIComponent(encodeURIComponent('smilinggeckosb-q'))}/messages/head",
+                                "queries": {
+                                    "queueType": "Main"
+                                }
+                            }
+                        }
+                    },
+                    "actions": {
+                        "Execute_stored_procedure": {
+                            "runAfter": {
+                                "Parse_JSON": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "DeviceID": "@body('Parse_JSON')?['deviceid']"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['sql_1']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/datasets/default/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[GetContractInfoForDeviceId]'))}"
+                            }
+                        },
+                        "For_each": {
+                            "foreach": "@body('Execute_stored_procedure')?['resultsets']?['Table1']",
+                            "actions": {
+                                "Send_message": {
+                                    "runAfter": {},
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": {
+                                            "ContentData": "@{base64(concat('{ ','\n','    \"requestId\": \"',variables('RequestID'),'\", ','\n','    \"userChainIdentifier\": \"',items('For_each')?['UserChainIdentifier'],'\", ','\n','    \"contractLedgerIdentifier\": \"',items('For_each')?['ContractLedgerIdentifier'],'\", ','\n','    \"workflowFunctionName\": \"',items('For_each')?['WorkflowFunctionName'],'\", ','\n','    \"Parameters\": [ ','\n','        { ','\n','            \"name\": \"humidity\",','\n','            \"value\": ',body('Parse_JSON')?['humidity'],'\n','        }, ','\n','        {','\n','            \"name\": \"temperature\", ','\n','            \"value\":  ',body('Parse_JSON')?['temperature'],'\n','        }, ','\n','        { ','\n','            \"name\": \"timestamp\",','\n','            \"value\":  ',variables('timestamp'),'\n','        } ','\n','    ],','\n','    \"connectionId\": ',items('For_each')?['ConnectionId'],', ','\n','    \"messageSchemaVersion\": \"1.0.0\", ','\n','    \"messageName\": \"CreateContractActionRequest\" ','\n','}'))}",
+                                            "SessionId": "@{variables('RequestID')}"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['servicebus_2']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/@{encodeURIComponent(encodeURIComponent('ingressqueue'))}/messages"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Initialize_variable_3": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "Foreach"
+                        },
+                        "Initialize_variable": {
+                            "runAfter": {
+                                "Initialize_variable_4": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "ticksNow",
+                                        "type": "Integer",
+                                        "value": "@ticks(utcNow())"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_2": {
+                            "runAfter": {
+                                "Initialize_variable": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "TicksTo1970",
+                                        "type": "Integer",
+                                        "value": "@ticks('1970-01-01')"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_3": {
+                            "runAfter": {
+                                "Initialize_variable_2": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "timestamp",
+                                        "type": "Integer",
+                                        "value": "@div(sub(variables('ticksNow'),variables('TicksTo1970')),10000000)"
+                                    }
+                                ]
+                            }
+                        },
+                        "Initialize_variable_4": {
+                            "runAfter": {
+                                "Execute_stored_procedure": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "RequestID",
+                                        "type": "String",
+                                        "value": "@guid()"
+                                    }
+                                ]
+                            }
+                        },
+                        "Parse_JSON": {
+                            "runAfter": {},
+                            "type": "ParseJson",
+                            "inputs": {
+                                "content": "@json(base64ToString(triggerBody()?['ContentData']))",
+                                "schema": {
+                                    "properties": {
+                                        "deviceid": {
+                                            "type": "string"
+                                        },
+                                        "humidity": {
+                                            "type": "number"
+                                        },
+                                        "humidity_unit": {
+                                            "type": "string"
+                                        },
+                                        "temperature": {
+                                            "type": "number"
+                                        },
+                                        "temperature_unit": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "servicebus": {
+                                "connectionId": "[parameters('connections_servicebus_externalid')]",
+                                "connectionName": "servicebus",
+                                "id": "/subscriptions/e294471f-f59f-42c9-842a-fad9e379127a/providers/Microsoft.Web/locations/westeurope/managedApis/servicebus"
+                            },
+                            "servicebus_2": {
+                                "connectionId": "[parameters('connections_servicebus_2_externalid')]",
+                                "connectionName": "servicebus-2",
+                                "id": "/subscriptions/e294471f-f59f-42c9-842a-fad9e379127a/providers/Microsoft.Web/locations/westeurope/managedApis/servicebus"
+                            },
+                            "sql_1": {
+                                "connectionId": "[parameters('connections_sql_1_externalid')]",
+                                "connectionName": "sql-1",
+                                "id": "/subscriptions/e294471f-f59f-42c9-842a-fad9e379127a/providers/Microsoft.Web/locations/westeurope/managedApis/sql"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
