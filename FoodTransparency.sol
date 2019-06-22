@@ -1,45 +1,51 @@
 pragma solidity >=0.4.25 <0.6.0;
 
-contract RefrigeratedTransportation
+contract FoodTransparency
 {
     //Set of States
-    enum StateType { OrderCreated, OrderConfirmed, InTransit, GoodReceived, OutOfCompliance, GoodValidated, DeliveryReady, DeliveryPickedUp, DeliveryInTransit, ClosedTransaction}
-    enum SensorType { None, Farming, Transportation, Factory}
-    enum GoodType { Potato, Apple, Pear}
+    enum StateType {OrderCreated, OrderConfirmed, InTransit, GoodReceived, OutOfCompliance, GoodValidated, DeliveryReady, DeliveryPickedUp, DeliveryInTransit, ClosedTransaction}
+    enum SensorType {Farming, Transportation, Factory}
 
     //List of properties
-    StateType public  State;
-    address public  Farmer;
-    address public  Investor;
-    address public  Device;
-    address public  Collector;
-    address public  Distributor;
-    address public  PesticideSupplier;
-    int public  Price;
+    StateType public State;
+    address public Farmer;
+    address public Investor;
+    address public Device;
+    address public Collector;
+    address public Distributor;
+    address public PesticideSupplier;
+    int public Price;
     int public Quantity;
-    int public  Deliverydate;
+    int public DeliveryDate;
     int public Humidity;
     int public Temperature;
     int public Accelerometer;
     int public Gyroscope;
-    date public LastSensorUpdateTimestamp;
+    int public DeviceTimestamp;
     SensorType public Sensor;
     string public Activity;
     int public PesticideCounter;
 
-    constructor(int price, int quantity, time deliverydate, address farmer,address distributor) public
+    constructor(int price, int quantity, int deliveryDate, address farmer, address distributor, address device, address pesticideSupplier) public
     {
+        State = StateType.OrderCreated;
         Farmer = farmer;
-        Distributor = distributor;
+        Device = device;
         Investor = msg.sender;
+        Distributor = distributor;
+        PesticideSupplier = pesticideSupplier;
         Price = price;
         Quantity = quantity;
-        Deliverydate = deliverydate;
+        DeliveryDate = deliveryDate;
+        Humidity = 0;
+        Temperature = 0;
+        Accelerometer = 0;
+        Gyroscope = 0;
         PesticideCounter = 0;
-        State = StateType.OrderCreated;
+        DeviceTimestamp = 0;
     }
 
-    function IngestTelemetry(int humidity, int temperature, int accelerometer, int gyroscope, int timestamp) public
+    function IngestTelemetry(int humidity, int temperature, int gyroscope, int accelerometer, int timestamp) public
     {
         // Separately check for states and sender 
         // to avoid not checking for state when the sender is the device
@@ -77,7 +83,7 @@ contract RefrigeratedTransportation
             Temperature = temperature;
         }
 
-        LastSensorUpdateTimestamp = timestamp;
+        DeviceTimestamp = timestamp;
     }
 
     function Confirm(bool answer) public
@@ -108,7 +114,7 @@ contract RefrigeratedTransportation
         }
     }
 
-    function StartDelivery(address distributor) public
+    function StartGoodDelivery(address distributor) public
     {
         if ( State == StateType.ClosedTransaction )
         {
@@ -146,7 +152,6 @@ contract RefrigeratedTransportation
             revert();
         }
 
-        Distributor = distributor;
         Activity = activity;
     }
 

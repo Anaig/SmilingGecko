@@ -20,8 +20,8 @@
       "Description": "The party who washes, sorts and packages goods."
     },
     {
-      "Name": "Auditor",
-      "Description": "An observer who has oversight on the end-to-end shipment."
+      "Name": "Distributor",
+      "Description": "A party who distributes the shipment."
     },
     {
       "Name": "PesticideSupplier",
@@ -35,7 +35,16 @@
       "Description": "Main workflow to track end-to-end transportation of perishable goods.",
       "Initiators": [ "Investor" ],
       "StartState": "OrderCreated",
-      "Properties": [],
+      "Properties": [
+          { 
+            "Name": "State", 
+            "DisplayName": "State", 
+            "Description": "Holds the state of the contract.", 
+            "Type": { 
+              "Name": "state" 
+              } 
+          }
+      ],
       "Constructor": {
         "Parameters": [
           {
@@ -55,11 +64,11 @@
             }
           },
           {
-            "Name": "deliverydate",
+            "Name": "deliveryDate",
             "Description": "...",
             "DisplayName": "Delivery date",
             "Type": {
-              "Name": "time"
+              "Name": "int"
             }
           },
           {
@@ -76,6 +85,22 @@
             "DisplayName": "Distributor",
             "Type": {
               "Name": "Distributor"
+            }
+          },
+          {
+            "Name": "device",
+            "Description": "...",
+            "DisplayName": "Device",
+            "Type": {
+              "Name": "Device"
+            }
+          },
+          {
+            "Name": "pesticideSupplier",
+            "Description": "...",
+            "DisplayName": "Pesticide supplier",
+            "Type": {
+              "Name": "PesticideSupplier"
             }
           }
         ]
@@ -144,7 +169,7 @@
           ]
         },
         {
-            "Name": "StartDelivery",
+            "Name": "StartGoodDelivery",
             "DisplayName": "Confirm shipment",
             "Description": "Confirm that you have shipped the good to the collecting center",
             "Parameters": [
@@ -278,7 +303,7 @@
               "AllowedRoles": ["Farmer"],
               "AllowedInstanceRoles": [],
               "Description": "...",
-              "Function": "StartDelivery",
+              "Function": "StartGoodDelivery",
               "NextStates": [ "InTransit" ],
               "DisplayName": "Good in transit to the collecting center"
             },
