@@ -9,7 +9,7 @@ Blockchain technology, combined with IoT data and Machine Learning, is the assur
 
 More than an investement, a real trust relationship is establised between the different actors. The investor can get information at any moment about the state of his order, and can also know more about the farmer and get real-time analytics of the crops thanks to the IoT devices of the connected farms.
 
-![Screen 1](/readmeMedia/app-screenshot.png)
+![Screen 1](/readmeMedia/ezgif-5-13a365a99c29.gif)
 
 ## How to deploy:
 
