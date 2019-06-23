@@ -11,7 +11,7 @@ More than an investement, a real trust relationship is establised between the di
 
 ![Screen 1](/readmeMedia/ezgif-5-13a365a99c29.gif)
 
-## How to deploy our blockchain solution:
+## How to access our blockchain solution's interface:
 
 - The URL to your working application
   - URL: https://smilinggecko-ajq7it.azurewebsites.net/
@@ -40,5 +40,17 @@ More than an investement, a real trust relationship is establised between the di
 ![Screen 1](/readmeMedia/screen7.png)
 
    - Based on the scneario described in the video, which accompany this readme, click on "Take action" to go though the whole use case.
+
+## How to use the front-end:
+
+- The URL to the interface:
+https://web.powerapps.com/apps/f07e535d-c015-4f65-86ac-a6324a5bbd12?tenantId=2d416ed8-b1d0-447d-bed8-1866cae7fb85 
+- How to connect
+```
+Username: sbhack19@mitedesc.network
+Password: Smilinggecko@Trustsquare
+```
+
+![Screen 1](/readmeMedia/signinfrontend.png)
 
 ## finished
