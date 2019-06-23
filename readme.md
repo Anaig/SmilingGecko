@@ -11,7 +11,7 @@ More than an investement, a real trust relationship is establised between the di
 
 ![Screen 1](/readmeMedia/ezgif-5-13a365a99c29.gif)
 
-## How to deploy:
+## How to deploy our blockchain solution:
 
 - The URL to your working application
   - URL: https://smilinggecko-ajq7it.azurewebsites.net/
