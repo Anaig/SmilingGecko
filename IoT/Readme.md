@@ -1,0 +1,2 @@
+GetDeviceContracts SQL stored procedure is meant to get the blockchain authentification info to allow the device to send Data to the Event Hub ingress queue of the Blockchain Workbench.
+The mxchip-device.code-workspace contains the IoT code running on an Arduino device. It can be deployed using the IoT Worbench Visual Studio extension. The script is sending humidity and temperature telemetry to an Azure IoT Hub. 

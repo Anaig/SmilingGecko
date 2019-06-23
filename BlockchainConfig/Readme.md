@@ -1,0 +1,2 @@
+Configuration json file describing the overall structure of the blockchain graph & Smart Contract Solidity file. 
+These both files should are used by the Azure Blockchain Worbench: https://smilinggecko-jekqz3.azurewebsites.net/

@@ -20,7 +20,7 @@ More than an investement, a real trust relationship is establised between the di
 ## 2. How to access our blockchain solution's interface:
 
 - The URL to your working application
-  - URL: https://smilinggecko-ajq7it.azurewebsites.net/
+  - URL: https://smilinggecko-jekqz3.azurewebsites.net/
  - The URL toyour public github repository
    - URL: https://github.com/anaig/smilinggecko
  - Short description about your applicationand:
