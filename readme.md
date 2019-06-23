@@ -1,11 +1,17 @@
 # Smiling Gecko : Transparent food supply chain process
 
-##Our objective:
+## Our objective:
 Today food supply chains are conventionally opaque, preventing the consummers to pursue their environmental, social and health values.
 Smiling Gecko aims at giving people back control over the whole food chain lifecyle. A user can invest into products at a local farm, and support the farmer in having a better environment impact, social impact and personal health. 
 Blockchain technology, combined with IoT data and Machine Learning, is the assurance of a transparent good lifecycle from farm to fork.
 
 ![Screen 1](/readmeMedia/supply-chain.png)
+
+More than an investement, a real trust relationship is establised between the different actors. The investor can get information at any moment about the state of his order, and can also know more about the farmer and get real-time analytics of the crops thanks to the IoT devices of the connected farms.
+
+![Screen 1](/readmeMedia/app-screenshot.png)
+
+## How to deploy:
 
 - The URL to your working application
   - URL: https://smilinggecko-ajq7it.azurewebsites.net/
